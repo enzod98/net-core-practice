@@ -1,5 +1,7 @@
 @model IEnumerable<Turnos.Models.Especialidad>
-
+<p>
+    <a asp-action="Create">Nuevo</a>
+</p>
 <table>
     <thead>
         <tr>
@@ -15,6 +17,10 @@
             <tr>
                 <td>
                     @Html.DisplayFor( modelItem => item.Descripcion)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdEspecialidad">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.IdEspecialidad">Eliminar</a>
                 </td>
             </tr>
         }
