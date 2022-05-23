@@ -14,7 +14,7 @@ namespace Turnos.Models
         public DbSet<Especialidad> Especialidad {get; set; }
         public DbSet<Paciente> Paciente {get; set; }
         public DbSet<Medico> Medico { get; set; }
-
+        public DbSet<MedicoEspecialidad> MedicoEspecialidad { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,57 @@ namespace Turnos.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
             });
+
+            modelBuilder.Entity<Medico>( entidad => {
+                entidad.ToTable("Medico");
+                entidad.HasKey(e => e.IdMedico);
+                entidad.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entidad.Property(e => e.Apellido)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entidad.Property(e => e.Direccion)
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entidad.Property(e => e.Telefono)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entidad.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entidad.Property(e => e.HorarioAtencionDesde)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entidad.Property(e => e.HorarioAtencionHasta)
+                    .IsRequired()
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<MedicoEspecialidad>().HasKey( x => 
+                new { x.IdMedico, x.IdEspecialidad }
+            );
+
+            modelBuilder.Entity<MedicoEspecialidad>()
+                .HasOne(x => x.Medico)
+                .WithMany(p => p.MedicoEspecialidad)//El tipo de relación entre Medico y MedicoEspecialidad
+                .HasForeignKey( p => p.IdMedico);//Definimos el campo FK
+
+            modelBuilder.Entity<MedicoEspecialidad>()
+                .HasOne( x => x.Especialidad)
+                .WithMany( x => x.MedicoEspecialidad )
+                .HasForeignKey( p => p.IdEspecialidad );
         }
 
     }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Turnos.Models;
 
 namespace Turnos.Migrations
 {
     [DbContext(typeof(TurnosContext))]
-    partial class TurnosContextModelSnapshot : ModelSnapshot
+    [Migration("20220522004918_MigracionMedico")]
+    partial class MigracionMedico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,21 +89,6 @@ namespace Turnos.Migrations
                     b.ToTable("Medico");
                 });
 
-            modelBuilder.Entity("Turnos.Models.MedicoEspecialidad", b =>
-                {
-                    b.Property<int>("IdMedico")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdEspecialidad")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdMedico", "IdEspecialidad");
-
-                    b.HasIndex("IdEspecialidad");
-
-                    b.ToTable("MedicoEspecialidad");
-                });
-
             modelBuilder.Entity("Turnos.Models.Paciente", b =>
                 {
                     b.Property<int>("IdPaciente")
@@ -142,21 +129,6 @@ namespace Turnos.Migrations
                     b.HasKey("IdPaciente");
 
                     b.ToTable("Paciente");
-                });
-
-            modelBuilder.Entity("Turnos.Models.MedicoEspecialidad", b =>
-                {
-                    b.HasOne("Turnos.Models.Especialidad", "Especialidad")
-                        .WithMany("MedicoEspecialidad")
-                        .HasForeignKey("IdEspecialidad")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Turnos.Models.Medico", "Medico")
-                        .WithMany("MedicoEspecialidad")
-                        .HasForeignKey("IdMedico")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
