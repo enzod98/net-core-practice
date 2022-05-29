@@ -13,23 +13,23 @@
 <body>
     <header>
          <nav>
-          <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">Logo</a>
+          <div class="nav-wrapper grey darken-3">
+            <a href="#!" class="brand-logo center">Sistema de Turnos</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-              <li><a href="sass.html">Sass</a></li>
-              <li><a href="badges.html">Components</a></li>
-              <li><a href="collapsible.html">Javascript</a></li>
-              <li><a href="mobile.html">Mobile</a></li>
+              <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+              <li><a asp-controller="Especialidad" asp-action="Index">Especialidad</a></li>
+              <li><a asp-controller="Paciente" asp-action="Index">Paciente</a></li>
+              <li><a asp-controller="Medico" asp-action="Index">Medico</a></li>
             </ul>
           </div>
         </nav>
 
         <ul class="sidenav" id="mobile-demo">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">Javascript</a></li>
-          <li><a href="mobile.html">Mobile</a></li>
+          <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+              <li><a asp-controller="Especialidad" asp-action="Index">Especialidad</a></li>
+              <li><a asp-controller="Paciente" asp-action="Index">Paciente</a></li>
+              <li><a asp-controller="Medico" asp-action="Index">Medico</a></li>
         </ul>
     </header>
     <div class="container">
@@ -50,6 +50,8 @@
     <script>
       $(document).ready(function(){
         $('.sidenav').sidenav();
+        $('.timepicker').timepicker();
+        $('select').formSelect();
       });
     </script>
 </body>
