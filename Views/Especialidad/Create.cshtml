@@ -4,16 +4,23 @@
 <div>
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="Descripcion"></label>
-            <input asp-for="Descripcion" />
-            <span asp-validation-for="Descripcion"></span>
+        <div class="input-field col s6">
+                <i class="material-icons prefix">text_snippet</i>
+                <input asp-for="Descripcion" type="text" class="validate">
+                <label asp-for="Descripcion"></label>
+                <span asp-validation-for="Descripcion" class=""></span>
         </div>
-        <div>
-            <input type="submit" value="Grabar" />
+        <div class="row">
+            <div class="col s6 m6">
+                <button class="btn waves-effect waves-light cyan accent-4" type="submit" name="action">Guardar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+            <div class="col s6 m6 right">
+                <a class="waves-effect waves-light btn grey darken-4" asp-action="Index">
+                    <i class="material-icons left">undo</i>Volver
+                </a>
+            </div>
         </div>
     </form>
-    <div>
-        <a asp-action="Index">Volver</a>
-    </div>
 </div>
