@@ -1,9 +1,9 @@
 @model IEnumerable<Turnos.Models.Paciente>
 <p>
-    <a asp-action="Create">Nuevo</a>
+    <a asp-action="Create" class="btn-floating btn-large green darken-1"><i class="material-icons">person_add</i></a>
 </p>
-<table>
-    <thead>
+<table class="responsive-table highlight z-depth-2 green lighten-5">
+    <thead class="green darken-1 white-text">
         <tr>
             <th>
                     @Html.DisplayNameFor(model => model.Nombre)
@@ -20,6 +20,7 @@
             <th>
                     @Html.DisplayNameFor(model => model.Email)
             </th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
@@ -43,12 +44,15 @@
                     @Html.DisplayFor( modelItem => item.Email)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="
-                    @item.IdPaciente">Detalle</a>
-                    <a asp-action="Edit" 
-                    asp-route-id="@item.IdPaciente">Editar</a>
-                    <a asp-action="Delete" asp-route-id="
-                    @item.IdPaciente">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@item.IdPaciente">
+                        <i class="material-icons">edit</i>
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.IdPaciente">
+                        <i class="material-icons">visibility</i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.IdPaciente">
+                        <i class="material-icons red-text">delete</i>
+                    </a>
                 </td>
             </tr>
         }

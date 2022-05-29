@@ -1,41 +1,34 @@
 @model Turnos.Models.Paciente
 
-<h4>Paciente</h4>
+
+<h4 class="center">Detalle del paciente</h4>
 <div>
-    <dl>
-        <dt>
-            @Html.DisplayNameFor(modelo => modelo.Nombre)
-        </dt>
-        <dd>
-            @Html.DisplayFor(modelo => modelo.Nombre)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(modelo => modelo.Apellido)
-        </dt>
-        <dd>
-            @Html.DisplayFor(modelo => modelo.Apellido)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(modelo => modelo.Direccion)
-        </dt>
-        <dd>
-            @Html.DisplayFor(modelo => modelo.Direccion)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(modelo => modelo.Telefono)
-        </dt>
-        <dd>
-            @Html.DisplayFor(modelo => modelo.Telefono)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(modelo => modelo.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(modelo => modelo.Email)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.IdPaciente">Editar</a> | 
-    <a asp-action="Index">Volver</a>
+    <hr />
+    <div class="row">
+        <div class="col s12 m6">
+        <div class="card hoverable green darken-1">
+            <div class="card-content white-text">
+            <span class="card-title"><h5><b>@Html.DisplayFor(model => model.Nombre) @Html.DisplayFor(model => model.Apellido)</b></h5></span>
+            <dl>
+                <dt>
+                    <h6>@Html.DisplayNameFor(model => model.Direccion): @Html.DisplayFor(model => model.Direccion)</h6>
+                </dt>
+                <hr>
+                <dt>
+                    <h6>@Html.DisplayNameFor(model => model.Telefono): @Html.DisplayFor(model => model.Telefono)</h6>
+                </dt>
+                <hr>
+                <dt>
+                    <h6>@Html.DisplayNameFor(model => model.Email): @Html.DisplayFor(model => model.Email)</h6>
+                </dt>
+                <hr>
+            </dl>
+            </div>
+            <div class="card-action blue-grey darken-2">
+                <a asp-action="Edit" asp-route-id="@Model.IdPaciente">Editar</a>
+                <a asp-action="Index" class="right">Volver</a>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>

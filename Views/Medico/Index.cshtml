@@ -1,14 +1,5 @@
 @model IEnumerable<Turnos.Models.Medico>
 
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
 <p>
     <a asp-action="Create" class="btn-floating btn-large green darken-1"><i class="material-icons">person_add</i></a>
 </p>
@@ -36,7 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.HorarioAtencionHasta)
             </th>
-            <th></th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
@@ -72,5 +63,3 @@
 }
     </tbody>
 </table>
-</body>
-</html>
