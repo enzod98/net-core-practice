@@ -58,5 +58,28 @@ namespace Turnos.Controllers
                 ok = ok
             });
         }
+
+        [HttpPost]
+        public JsonResult EliminarTurno(int idTurno)
+        {
+            var ok = false;
+            try
+            {
+                var turno = _context.Turno.FirstOrDefault( t => t.IdTurno == idTurno);
+                if( turno == null ) throw new Exception("El turno con este id no existe");
+                
+                _context.Turno.Remove(turno);
+                _context.SaveChanges();
+                ok = true;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+
+            return Json(new {
+                ok = ok
+            });
+        }
     }
 }
