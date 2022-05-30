@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using Turnos.Models;
+
+namespace Turnos.Controllers
+{
+    public class TurnoController : Controller
+    {
+        private readonly TurnosContext _context;
+        private IConfiguration _configuration;
+        public TurnoController(TurnosContext context, IConfiguration configuration)
+        {
+            _context = context;
+            _configuration = configuration;
+        }
+        public IActionResult Index()
+        {
+            ViewData["IdMedico"] = 
+                new SelectList( from medico in _context.Medico.ToList()
+                                select new { IdMedico = medico.IdMedico, NombreCompleto = $"{medico.Nombre} { medico.Apellido}" },
+                                "IdMedico", "NombreCompleto");
+
+            ViewData["IdPaciente"] = 
+                new SelectList( from paciente in _context.Paciente.ToList()
+                                select new { IdPaciente = paciente.IdPaciente, NombreCompleto = $"{paciente.Nombre} { paciente.Apellido}" },
+                                "IdPaciente", "NombreCompleto");
+            return View();
+        }
+
+        public JsonResult ObtenerTurnos(int idMedico)
+        {
+            List<Turno> turnos = new List<Turno>();
+            turnos = _context.Turno.Where( t => t.IdMedico == idMedico).ToList();
+
+            return Json(turnos);
+        }
+
+        [HttpPost]
+        public JsonResult GrabarTurno(Turno turno)
+        {
+            var ok = false;
+            try
+            {
+                _context.Turno.Add(turno);
+                _context.SaveChanges();
+                ok = true;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+
+            return Json(new {
+                ok = ok
+            });
+        }
+    }
+}
