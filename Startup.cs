@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,11 +26,16 @@ namespace Turnos
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Cookie de sesión
             services.AddSession(option => {
                option.IdleTimeout = TimeSpan.FromSeconds(300);
                option.Cookie.HttpOnly = true; 
             });
-            services.AddControllersWithViews();
+
+            //Añadir el AntiforgeryToken a todas las rutas tipo POST
+            services.AddControllersWithViews(options => {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             services.AddDbContext<TurnosContext>(opciones => 
                 opciones.UseSqlServer(Configuration.GetConnectionString("TurnosContext")));    //añadimos el contexto de nuestra bd
         }
@@ -54,6 +60,7 @@ namespace Turnos
 
             app.UseAuthorization();
 
+            //Cookie de sesión
             app.UseSession();
 
             app.UseEndpoints(endpoints =>

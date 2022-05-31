@@ -1,5 +1,5 @@
 @model Turnos.Models.Turno
-
+@Html.AntiForgeryToken() @* Con esto generamos un token para la validación tipo AntiForgeryToken *@
 @{
     ViewBag.Title = "Asignación de turnos";
 }
@@ -187,6 +187,9 @@
                 $.ajax({
                     type: 'POST',
                     url: 'Turno/GrabarTurno',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
                     data: turno,
                     success: function(resp){
                         if(resp.ok) getTurnosAndUpdate(turno.IdMedico);
@@ -203,6 +206,9 @@
                     $.ajax({
                         type: 'POST',
                         url: 'Turno/EliminarTurno',
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
                         data: {'IdTurno': turnoSeleccionado.idTurno },
                         success: function(resp){
                             if(resp.ok) getTurnosAndUpdate( $('#IdMedico').val() );
