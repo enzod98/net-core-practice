@@ -1,0 +1,120 @@
+@model Turnos.Models.Turno
+
+@{
+    ViewBag.Title = "Asignación de turnos";
+}
+
+<div class="row">
+    <div class="col s6">
+        <label asp-for="IdMedico">Médico</label>
+        <select asp-for="IdMedico" asp-items="ViewBag.IdMedico"></select>
+    </div>
+    <div class="col s6">
+        <label asp-for="IdPaciente">Paciente</label>
+        <select asp-for="IdPaciente" asp-items="ViewBag.IdPaciente"></select>
+    </div>
+</div>
+
+<br>
+
+<div id="CalendarioTurnos"></div>
+
+<link href="~/fullcalendar/fullcalendar.css" rel="stylesheet">
+<link href="~/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print">
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="~/fullcalendar/fullcalendar.min.js"></script>
+    <script src="~/fullcalendar/locale/es.js"></script>
+    <script>
+        $(document).ready(function () {
+            let horarioDesde = '';
+            let horarioHasta = '';
+            let turnos = [];
+
+            $('#IdMedico').change(function(){
+                getTurnosAndUpdate( this.value );
+            })
+            getTurnosAndUpdate( $('#IdMedico').val() );
+
+            function getTurnosAndUpdate(idMedico){
+                turnos = [];
+                $.ajax({
+                    type: 'GET',
+                    url: 'Turno/ObtenerTurnos',
+                    data: {
+                        IdMedico: idMedico 
+                    },
+                    success: function(resp){
+                        $.each(resp, function(i, val){
+                            turnos.push({
+                            //JQuery transforma la inicial de cada propiedad a minúscula de forma automática 
+                                idTurno: val.idTurno,
+                                idPaciente: val.idPaciente,
+                                idMedico: val.idMedico,
+                                start: moment(val.fechaHoraInicio),
+                                end: val.fechaHoraFin != null ? moment(val.fechaHoraFin) : null
+                            })
+                        })
+                        GenerarCalendario(turnos);
+                    },
+                    error: function(err){
+                        alert('Error al obtener turnos')
+                    }
+                })
+            }
+
+            function GenerarCalendario(turnos){
+                $.ajax({
+                    type: 'GET',
+                    url: 'Medico/GetHorarioAtencionDesde',
+                    data: {
+                        idMedico: $('#IdMedico').val()
+                    },
+                    async: false,
+                    success: function(res){
+                        horarioDesde = res;
+                    },
+                    error: function(err){
+                        console.log(err);
+                    }
+                })
+                $.ajax({
+                    type: 'GET',
+                    url: 'Medico/GetHorarioAtencionHasta',
+                    data: {
+                        idMedico: $('#IdMedico').val()
+                    },
+                    async: false,
+                    success: function(res){
+                        horarioHasta = res;
+                    },
+                    error: function(err){
+                        console.log(err);
+                    }
+                })
+
+                $('#CalendarioTurnos').fullCalendar('destroy');
+                $('#CalendarioTurnos').fullCalendar({
+                     contentHeight: 'auto',
+                    defaultDate: new Date(),
+                    slotLabelFormat: "HH:mm",
+                    defaultView: 'agendaWeek',
+                    header: {
+                        left: 'prev,next today',
+                        right: 'month,agendaWeek,agendaDay',
+                    },
+                    slotDuration: '00:30',
+                    nowIndicator: true,
+                    allDaySlot: false,
+                    selectable: true,
+                    eventLimit: true,
+                    minTime: horarioDesde,
+                    maxTime: horarioHasta,
+                    events: turnos
+                });
+            };
+
+        })
+    </script>
+}
